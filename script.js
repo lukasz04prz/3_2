@@ -1,12 +1,23 @@
-(function() {
-  const tb_station_id = document.getElementById('tb-station_id')
-  const tb_name = document.getElementById('tb-name')
-  const tb_latitude = document.getElementById('tb-latitude')
-  const tb_longitude = document.getElementById('tb-longitude')
+(async function() {
+  const t = document.getElementById('t')
 
-  fetch('https://restcountries.com/v3.1/capital/Warsaw')
-    .then(response => response.json())
-    .then(country => {
-      
+  let a = fetch(`https://corsproxy.io/?${encodeURIComponent("https://www.ncei.noaa.gov/cdo-web/api/v2/stations")}`, {
+    headers: {
+      "token": "WyVCmQTTsZvazOCsrmExBNaNOvTQeJzI",
+    },
+  });
+
+  a.then(response => response.json())
+    .then(result => {
+      result.results.forEach(station => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+             <td>${station.id}</td>
+             <td>${station.name}</td>
+             <td>${station.latitude}</td>
+             <td>${station.longitude}</td>
+         `;
+        t.appendChild(row);
+      })
     });
 })();
