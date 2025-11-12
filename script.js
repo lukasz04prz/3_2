@@ -1,13 +1,13 @@
+var api_key = "WyVCmQTTsZvazOCsrmExBNaNOvTQeJzI";
+
 (async function() {
   const t = document.getElementById('t')
 
-  let a = fetch(`https://corsproxy.io/?${encodeURIComponent("https://www.ncei.noaa.gov/cdo-web/api/v2/stations")}`, {
+  fetch(`https://corsproxy.io/?${encodeURIComponent("https://www.ncei.noaa.gov/cdo-web/api/v2/stations")}`, {
     headers: {
-      "token": "WyVCmQTTsZvazOCsrmExBNaNOvTQeJzI",
+      "token": api_key,
     },
-  });
-
-  a.then(response => response.json())
+  }).then(response => response.json())
     .then(result => {
       result.results.forEach(station => {
         const row = document.createElement('tr');
@@ -18,6 +18,25 @@
              <td>${station.longitude}</td>
          `;
         t.appendChild(row);
+      })
+    });
+
+  fetch(`https://corsproxy.io/?${encodeURIComponent("https://www.ncei.noaa.gov/cdo-web/api/v2/locations")}`, {
+    headers: {
+      "token": api_key,
+    },
+  }).then(response => response.json())
+    .then(result => {
+      result.results.forEach(station => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+             <td>${station.id}</td>
+             <td>${station.mindate}</td>
+             <td>${station.maxdate}</td>
+             <td>${station.name}</td>
+             <td>${station.datacoverage}</td>
+         `;
+        l.appendChild(row);
       })
     });
 })();
